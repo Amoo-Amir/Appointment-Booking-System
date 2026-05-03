@@ -26,10 +26,6 @@ const bookingSchema = new mongoose.Schema(
       enum: ["pending", "confirmed", "cancelled", "completed"],
       default: "pending",
     },
-    version: {
-      type: Number,
-      default: 0,
-    },
     expiresAt: {
       type: Date,
       default: () => new Date(+new Date() + 24 * 60 * 60 * 1000),

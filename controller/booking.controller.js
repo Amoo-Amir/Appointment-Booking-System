@@ -121,7 +121,6 @@ const cancelBooking = asynchandler(async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { verison } = req.body;
 
     const booking = await Booking.findById(id).populate("user", "role");
 
@@ -370,9 +369,183 @@ const getAvailableSlots = asynchandler(async (req, res) => {
   });
 });
 
-const updatebooked = asynchandler(async (req, res) => {});
+const updatebooked = asynchandler(async (req, res) => {
+  const { id } = req.params;
+  const { date, timeSlot, service } = req.body;
+  const userId = req.userId;
 
-const deletebooked = asynchandler(async (req, res) => {});
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "booking id fprmat is not valid",
+    });
+  }
+
+  const booking = await Booking.findById(id);
+  if (!booking) {
+    return res.status(404).json({
+      success: false,
+      message: "booking not found or id is wrong",
+    });
+  }
+
+  if (booking.user.toString() !== userId.toString()) {
+    return res.status(403).json({
+      success: false,
+      message: "you can only update your own bookings",
+    });
+  }
+
+  if (booking.status !== "pending") {
+    return res.status(400).json({
+      success: false,
+      message: `cannot update booking with status: ${booking.status}. only pending bookings can be updated`,
+    });
+  }
+
+  if (booking.date < new Date()) {
+    return res.status(400).json({
+      success: false,
+      message: "cannot update past bookings",
+    });
+  }
+
+  let updateFields = {};
+
+  if (date !== undefined) {
+    const newDate = new Date(date);
+    if (newDate < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: "cannot set booking date in the past",
+      });
+    }
+    updateFields.date = newDate;
+  }
+
+  if (timeSlot !== undefined) {
+    updateFields.timeSlot = timeSlot;
+  }
+
+  if (service !== undefined) {
+    if (!mongoose.Types.ObjectId.isValid(service)) {
+      return res.status(400).json({
+        success: false,
+        message: "invalid service id format",
+      });
+    }
+
+    const serviceExists = await Service.findById(service);
+    if (!serviceExists) {
+      return res.status(404).json({
+        success: false,
+        message: "service not found",
+      });
+    }
+    updateFields.service = service;
+  }
+
+  if (Object.keys(updateFields).length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "no valid fields to update",
+    });
+  }
+
+  const hasTimeChange =
+    date !== undefined || timeSlot !== undefined || service !== undefined;
+
+  if (hasTimeChange) {
+    const newDate = date !== undefined ? updateFields.date : booking.date;
+    const newTimeSlot =
+      timeSlot !== undefined ? updateFields.timeSlot : booking.timeSlot;
+    const newService =
+      service !== undefined ? updateFields.service : booking.service;
+
+    const conflictingBooking = await Booking.findOne({
+      _id: { $ne: id },
+      service: newService,
+      date: newDate,
+      timeSlot: newTimeSlot,
+      status: { $in: ["pending", "confirmed"] },
+    });
+
+    if (conflictingBooking) {
+      return res.status(409).json({
+        success: false,
+        message: "this time slot is already booked for the selected service",
+      });
+    }
+  }
+
+  const updatedBooking = await Booking.findByIdAndUpdate(
+    id,
+    { $set: updateFields },
+    {
+      new: true,
+      runValidators: true,
+      context: "query",
+    },
+  )
+    .populate("service", "name duration price description")
+    .populate("user", "name email");
+
+  res.status(200).json({
+    success: true,
+    message: "booking updated successfully",
+    data: updatedBooking,
+  });
+});
+
+const deletebooked = asynchandler(async (req, res) => {
+  const { id } = req.query;
+  const userid = req.userId;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "user id format isnt valid.",
+    });
+  }
+
+  const booked = await Booking.findById(id).select("user status date");
+  if (!booked) {
+    return res.status(404).json({
+      success: false,
+      message: "Booking not found",
+    });
+  }
+
+  if (userid.toString() !== booked.user.toString()) {
+    return res.status(403).json({
+      success: false,
+      message: "you can only delete your owned bookings",
+    });
+  }
+
+  const allowedstatus = ["pending", "cancelled"];
+
+  if (!allowedstatus.includes(booked.status)) {
+    return res.status(400).json({
+      success: false,
+      message: `cannot delete booking with status: ${booked.status}`,
+    });
+  }
+
+  if (booked.date < new Date()) {
+    return res.status(400).json({
+      success: false,
+      message: "cannot delete past bookings",
+    });
+  }
+
+  await Booking.findByIdAndDelete(id);
+
+  res.status(200).json({
+    success: true,
+    message: "booking deleted successfully",
+  });
+});
 
 module.exports = {
   makebook,
