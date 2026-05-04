@@ -1,15 +1,19 @@
-// src/models/Service.js
 const mongoose = require("mongoose");
 
 const serviceSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
     },
     description: String,
     duration: {
-      type: Number, // به دقیقه
+      type: Number,
       required: true,
     },
     price: {

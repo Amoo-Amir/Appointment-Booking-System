@@ -26,7 +26,7 @@ app.use("/api/booking", bookingLimiter);
 
 //router
 app.use("/api/auth", userRouter.Route);
-app.use("/api/service", serviceRoute.route);
+app.use("/api/service", serviceRoute.Route);
 app.use("/api/booking", bookingRouter.route);
 
 // DB

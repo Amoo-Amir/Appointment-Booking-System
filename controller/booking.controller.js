@@ -554,4 +554,6 @@ module.exports = {
   getBookingById,
   confirmBooking,
   getAvailableSlots,
+  updatebooked,
+  deletebooked,
 };

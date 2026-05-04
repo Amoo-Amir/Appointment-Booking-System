@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
 const register = asynchandler(async (req, res) => {
-  const { fullName, email, password, phone } = req.body;
+  const { fullName, email, password, phone, secretkey } = req.body;
 
   if (!email || !password) {
     return res
@@ -35,7 +35,12 @@ const register = asynchandler(async (req, res) => {
     email,
     password: hashed,
     phone,
+    role: "user",
   });
+
+  if (secretkey && secretkey === process.env.ADMIN_SECRET_KEY) {
+    newuser.role = "admin";
+  }
 
   const saved = await newuser.save();
 
@@ -322,4 +327,11 @@ const changepassword = asynchandler(async (req, res) => {
   });
 });
 
-module.exports = { register, login, profile };
+module.exports = {
+  register,
+  login,
+  profile,
+  updateprofile,
+  deleteaccount,
+  changepassword,
+};
