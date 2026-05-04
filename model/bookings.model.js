@@ -35,6 +35,14 @@ const bookingSchema = new mongoose.Schema(
       default: new Date(),
       requried: true,
     },
+    bookingCountToday: {
+      type: Number,
+      default: 0
+    },
+    lastBookingAt: {
+      type: Date,
+      default: null
+    }
   },
   {
     timestamps: true,

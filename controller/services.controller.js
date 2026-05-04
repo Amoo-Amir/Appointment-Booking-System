@@ -85,7 +85,7 @@ const getServices = asyncHandler(async (req, res) => {
     filter.$or = [
       {
         name: { $regex: search, $options: "i" },
-        description: { search, $options: "i" },
+        description: { $regex: search, $options: "i" },
       },
     ];
   }
@@ -106,11 +106,11 @@ const getServices = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    count: services.length,
+    count: service.length,
     total,
     totalPages: Math.ceil(total / limit),
     currentPage: Number(page),
-    data: services,
+    data: service,
   });
 });
 

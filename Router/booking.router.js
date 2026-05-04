@@ -12,7 +12,8 @@ route.get("/get-mybookings", auth, booking.getmybookings);
 route.get("/get-mybooking/:id", auth, booking.getBookingById);
 route.get("/available-slots", auth, booking.getAvailableSlots);
 
-route.put("/update-booking", auth, booking.updatebooked);
-route.delete("/delete-booking", auth, booking.deletebooked);
+
+route.put("/update-booking/:id", auth, booking.updatebooked);
+route.delete("/delete-booking/:id", auth, booking.deletebooked); 
 
 module.exports = { route };

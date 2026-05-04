@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { type } = require("node:os");
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,13 +24,14 @@ const userSchema = new mongoose.Schema(
       default: "customer",
     },
     refreshToken: {
-      type: String, 
+      type: String,
       default: null,
     },
     isActive: {
       type: Boolean,
       default: true,
     },
+    secretkey: { type: String },
   },
   {
     timestamps: true,

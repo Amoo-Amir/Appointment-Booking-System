@@ -498,7 +498,7 @@ const updatebooked = asynchandler(async (req, res) => {
 });
 
 const deletebooked = asynchandler(async (req, res) => {
-  const { id } = req.query;
+  const { id } = req.params;
   const userid = req.userId;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {

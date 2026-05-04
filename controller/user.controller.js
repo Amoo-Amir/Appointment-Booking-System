@@ -35,7 +35,7 @@ const register = asynchandler(async (req, res) => {
     email,
     password: hashed,
     phone,
-    role: "user",
+    role: "customer",
   });
 
   if (secretkey && secretkey === process.env.ADMIN_SECRET_KEY) {
@@ -128,7 +128,7 @@ const updateprofile = asynchandler(async (req, res) => {
     });
   }
 
-  if (req.userId.toString() !== id) {
+  if (req.userId.toString() !== id.toString()) {
     return res.status(403).json({
       success: false,
       message: "You can only update your own profile",

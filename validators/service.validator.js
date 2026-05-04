@@ -9,7 +9,7 @@ const createServiceSchema = Joi.object({
       'number.max': 'مدت زمان حداکثر ۲۴۰ دقیقه'
     }),
   price: Joi.number().min(0).required(),
-  availability: Joi.boolean().default(true)
+  isAvailable: Joi.boolean().default(true)
 });
 
 const updateServiceSchema = Joi.object({
