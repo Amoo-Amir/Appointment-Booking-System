@@ -1,41 +1,100 @@
+<div align="center">
 
+# 📅 Appointment Booking System
 
-# README
+[![Node.js Version](https://img.shields.io/badge/Node.js-v22.14.0-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-v5.2.1-000000?logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-v9.5.0-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![JWT](https://img.shields.io/badge/JWT-v9.0.3-000000?logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-## 🎯 معرفی کلی
-«Appointment Booking System» یک سیستم رزرو آنلاین است که به کاربران امکان می‌دهد:
-- ثبت‌نام و ورود کنند
-- سرویس جدید توسط ادمین ایجاد شود
-- کاربران بتوانند زمان‌های آزاد را مشاهده و رزرو کنند
-- رزروها را لغو یا تأیید (برای ادمین) نمایند
+> **یک سیستم رزرو نوبت آنلاین قدرتمند، امن و مقیاس‌پذیر**  
+> مناسب برای کلینیک‌ها، مراکز خدماتی، آرایشگاه‌ها، تعمیرگاه‌ها و هر کسب‌وکاری که نیاز به مدیریت نوبت‌دهی دارد.
 
-## 🚀 پیش‌نیازها
-- Node.js (نسخه ≥ 14)  
-- MongoDB (نسخه ≥ 4.x)  
-
-## ⚙️ تنظیم متغیرهای محیطی
-قبل از اجرا، یک فایل `.env` در ریشه پروژه بسازید و مقادیر زیر را قرار دهید:  
-```
-MONGO_URI = mongodb://localhost:27017/Reserving
-PORT = 3008
-SECRET_KEYT = AMIR12345
-ADMIN_SECRET_KEY = AdMIN1234
-```  
-[1]
-
-## 📦 نصب و اجرا
-```bash
-# دریافت بسته‌ها
-npm install
-
-# اجرای پروژه در حالت توسعه (با nodemon)
-npm run dev
-
-# یا اجرای ساده
-node app.js
-```
+</div>
 
 ---
+
+## ✨ ویژگی‌های اصلی
+
+| ویژگی | توضیحات |
+|-------|---------|
+| 🔐 **احراز هویت پیشرفته** | ثبت‌نام، ورود، تغییر رمز و حذف حساب با JWT و bcrypt |
+| 👑 **سیستم نقش‌ها** | دو نقش `customer` و `admin` با دسترسی‌های متفاوت |
+| 📦 **مدیریت سرویس‌ها** | CRUD کامل سرویس‌ها با قیمت، زمان و توضیحات |
+| 🕒 **رزرو هوشمند** | تشخیص تداخل زمانی، محدودیت ۵ رزرو در روز |
+| 📊 **فیلتر و جستجو** | جستجو بر اساس قیمت، وضعیت، نام سرویس و صفحه‌بندی |
+| 🛡️ **Rate Limiting** | محافظت در برابر حملات Brute Force و DDoS |
+| ✅ **اعتبارسنجی قدرتمند** | با Joi و خطاهای فارسی |
+| 🔄 **تراکنش‌های اتمیک** | جلوگیری از تداخل همزمان با MongoDB Sessions |
+| 📧 **داده‌های مرتبط** | Populate خودکار اطلاعات کاربر و سرویس |
+
+---
+
+## 🛠️ تکنولوژی‌های استفاده شده
+
+<details>
+<summary><b>📦 لیست کامل تکنولوژی‌ها (کلیک کنید)</b></summary>
+
+| کتابخانه | نسخه | کاربرد |
+|----------|------|--------|
+| **Node.js** | v22.14.0 | Runtime Environment |
+| **Express.js** | v5.2.1 | Web Framework |
+| **MongoDB** | v9.5.0 (Mongoose) | Database |
+| **jsonwebtoken** | v9.0.3 | Authentication |
+| **bcrypt** | v6.0.0 | Password Hashing |
+| **Joi** | v18.1.2 | Data Validation |
+| **express-rate-limit** | v8.4.1 | Rate Limiting |
+| **dotenv** | v17.4.2 | Environment Variables |
+
+</details>
+
+---
+
+## 📋 پیش‌نیازها
+
+قبل از نصب، مطمئن شوید این موارد را دارید:
+
+- ✅ **Node.js** نسخه 14 یا بالاتر (توصیه: v22.14.0)
+- ✅ **MongoDB** نصب شده (محلی یا Atlas)
+- ✅ **Postman** برای تست API (اختیاری)
+- ✅ **Git** برای کلون کردن پروژه
+
+---
+
+## 🚀 نصب و راه‌اندازی
+
+### 1. کلون کردن پروژه
+
+```bash
+git clone https://github.com/Amoo-Amir/Appointment-Booking-System.git
+cd Appointment-Booking-System
+
+ نصب وابستگی‌ها
+ npm install
+
+ تنظیم متغیرهای محیطی
+یک فایل .env در ریشه پروژه بسازید:
+# Server Configuration
+PORT=3008
+
+# Database
+MONGODB_URI=mongodb://localhost:27017/appointment-system
+
+# Security
+SECRET_KEYT=your_super_secret_jwt_key_here
+ADMIN_SECRET_KEY=your_admin_secret_key_here
+
+اجرای پروژه
+# حالت توسعه (با nodemon - نیاز به نصب جداگانه)
+npm run dev
+
+# حالت تولید
+npm start
+
+🚀 Server running on http://localhost:3008
+✅ Connected to MongoDB
 
 ## 📝 مستندات API و تست با Postman
 
@@ -93,11 +152,22 @@ node app.js
 
 ---
 
-## 📌 نکات نهایی
-- برای هر درخواست از تب **Body** در Postman حالت **raw + JSON** را انتخاب کنید.  
-- در صورت ارور اعتبارسنجی، پیام خطا در بدنه پاسخ بازگردانده می‌شود.  
-- قبل از عملیات محافظت‌شده، حتماً متد ورود را تست و توکن دریافتی را ذخیره کنید.
+👨‍💻 توسعه‌دهنده
+(AmirMahdi Rahmati)
 
----
+📧 Email: amirmahdiamirmahdi774@gmail.com
 
-<p align="center">موفق باشید! 🚀</p>
+🐙 GitHub: @Amoo-Amir
+
+ To-Do (ویژگی‌های آینده)
+افزودن سیستمی برای یادآوری با ایمیل
+
+پنل مدیریت پیشرفته با React
+
+اضافه کردن تقویم تعاملی
+
+پشتیبانی از پرداخت آنلاین
+
+ایجاد API Documentation با Swagger
+
+افزودن تست‌های واحد (Unit Tests)
